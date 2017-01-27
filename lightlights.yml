@@ -1,0 +1,23 @@
+---
+# greenLower = (16,130,43)
+# greenUpper = (49,227,94)
+
+window_title: Heroes of the Storm
+interval: 0.4
+watchers:
+  - name: 'Health'
+    color_upper_limit:
+      red: 94
+      green: 227
+      blue: 49
+    color_lower_limit:
+      red: 43
+      green: 130
+      blue: 16
+    requests:
+      - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+        method: POST
+        payloads:
+          entity_id: 'light.office'
+          rgb_color: 'RGB_PLACEHOLDER'
+        
