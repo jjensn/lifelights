@@ -21,6 +21,7 @@ Control your home based on _any_ horizontal status bars by using simple screensh
 
 ### Configuration details
 Currently there is no input sanitation or verification, so drifting from the guidlines below will likely break the script.
+
 - **window_title** (string): Title of the window that will be monitored
 - **scan_interval** (float): Interval in seconds to take a screenshot
 - **watchers**: List of different 'watchers' to calculate. For example, if there was a green health bar and a blue mana bar, you would add a separate entry for both. To avoid wasting resources, this uses the same screenshot for each watcher listed. That is to say, there won't be another screenshot taken until all the watchers are processed.
