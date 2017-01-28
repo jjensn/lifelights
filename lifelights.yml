@@ -3,9 +3,11 @@
 # greenUpper = (49,227,94)
 
 window_title: Heroes of the Storm
-interval: 0.1
+scan_interval: 0.3
 watchers:
   - name: 'Health'
+    min_width: 10
+    change_threshold: 5
     color_upper_limit:
       red: 94
       green: 227
@@ -18,6 +20,10 @@ watchers:
       - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
         method: POST
         payloads:
-          entity_id: 'light.office'
+          entity_id: 'light.office_1'
           rgb_color: 'RGB_PLACEHOLDER'
-        
+      - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+        method: POST
+        payloads:
+          entity_id: 'light.office_2'
+          rgb_color: 'RGB_PLACEHOLDER'

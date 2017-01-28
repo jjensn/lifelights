@@ -35,7 +35,7 @@ class WidthWatcher:
             #x, y, w, h = cv2.boundingRect(c)
             _, _, width, _ = cv2.boundingRect(max_cnt)
 
-            if width > 15:
+            if (width - int(self._settings["min_width"])) >= 0:
                 if self._max_width < width:
                     self._max_width = float(width)
                     Util.log("Max %s updated %d" %
@@ -53,12 +53,16 @@ class WidthWatcher:
             self.width = 0.0
 
     def process(self):
-        import copy
         """Execute RESTful API calls based on the results of an image scan."""
-        percent = round(self.width * 100) / 100.0
+        import copy
 
         if self.width == self._last_width:
             return
+
+        if abs(self._last_width - self.width) < (self._settings["change_threshold"]*1.0) / 100:
+            return
+
+        percent = round(self.width * 100) / 100.0
 
         if percent <= 0.0:
             Util.log("%s reached 0.0 -- did you die? :P" %
@@ -88,4 +92,5 @@ class WidthWatcher:
                     Util.log("RESTful response %s" % api_call)
 
         except Exception, exc:
-            Util.log("Error firing an event for %s, event: %s" % (self._settings["name"], exc))
+            Util.log("Error firing an event for %s, event: %s" %
+                     (self._settings["name"], exc))

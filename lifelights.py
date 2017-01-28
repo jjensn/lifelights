@@ -32,7 +32,7 @@ def main():
             time.sleep(0.3)
             continue
 
-        time.sleep(float(settings["interval"]))
+        time.sleep(float(settings["scan_interval"]))
 
         screen = Util.screenshot(window)
 
