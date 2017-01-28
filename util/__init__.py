@@ -2,6 +2,7 @@ import time
 
 
 class Util:
+
     @classmethod
     def current_date(self):
         """Fetch the current date for logging."""
@@ -23,7 +24,8 @@ class Util:
         if hwnd is None or hwnd is 0:
             return None
 
-        # Windows 7 and higher uses invisible borders and GetWindowRect returns the 'wrong' values
+        # Windows 7 and higher uses invisible borders and GetWindowRect returns
+        # the 'wrong' values
         try:
             window = ctypes.windll.dwmapi.DwmGetWindowAttribute
         except WindowsError:
@@ -36,10 +38,9 @@ class Util:
                 ctypes.wintypes.HWND(hwnd),
                 ctypes.wintypes.DWORD(DWMWA_EXTENDED_FRAME_BOUNDS),
                 ctypes.byref(rect), ctypes.sizeof(rect))
-            # for now, let's just hardcode the focus on the bottom left corner of the screen
-            # support for this can be added later
-            window_size = (rect.left, rect.bottom / 2, rect.right / 2,
-                           rect.bottom)
+            # window_size = (rect.left, rect.bottom / 2, rect.right / 2,
+            #               rect.bottom)
+            window_size = (rect.left, rect.top, rect.right, rect.bottom)
         else:
             window_size = win32gui.GetWindowRect(hwnd)
 

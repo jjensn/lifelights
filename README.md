@@ -16,7 +16,6 @@ Control your home based on _any_ horizontal status bars by using simple screensh
 ### Known limitations
 - Not compatible with OSX
 - Game must be run as "windowed fullscreen" or "windowed"
-- For my own optimization, I'm taking a screenshot of the bottom left segment of the window. If you want the whole window, change line 41 in the utilities module
 - API POST requests will always be in JSON format
 
 ### Configuration details
