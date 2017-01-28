@@ -3,7 +3,7 @@
 # greenUpper = (49,227,94)
 
 window_title: Heroes of the Storm
-interval: 0.4
+interval: 0.1
 watchers:
   - name: 'Health'
     color_upper_limit:

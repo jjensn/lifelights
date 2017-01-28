@@ -1,5 +1,7 @@
 # lifelights
-Color your RGB bulbs based on in-game health bars. Currently works out of the box with Heroes of the Storm, but can be made to fit any game!
+Color your RGB bulbs based on *any* in-game status bars. 
+
+Current configuration is for Heroes of the Storm health, but can be made to fit any game and any horizontal bar!
 
 ![Detect health bar using RGB colors](http://i.imgur.com/rbIWEJr.png)
 

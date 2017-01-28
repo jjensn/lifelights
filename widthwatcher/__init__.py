@@ -35,11 +35,12 @@ class WidthWatcher:
             #x, y, w, h = cv2.boundingRect(c)
             _, _, width, _ = cv2.boundingRect(max_cnt)
 
-            if self._max_width < width:
-                self._max_width = float(width)
-                Util.log("Max %s updated %d" % (self._settings["name"], width))
+            if width > 15:
+                if self._max_width < width:
+                    self._max_width = float(width)
+                    Util.log("Max %s updated %d" %
+                             (self._settings["name"], width))
 
-            if width > 1:
                 self.width = 1.0 * (float(width) / float(self._max_width))
 
             # uncomment for debugging purposes
@@ -86,5 +87,5 @@ class WidthWatcher:
                         data=json.dumps(request["payloads"]))
                     Util.log("RESTful response %s" % api_call)
 
-        except Exception:
-            Util.log("Error firing an event for %s" % self._settings["name"])
+        except Exception, exc:
+            Util.log("Error firing an event for %s, event: %s" % (self._settings["name"], exc))

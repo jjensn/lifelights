@@ -12,7 +12,7 @@ sys.path.append(
 
 def main():
     """Main entrypoint for script."""
-    config_file = open('lightlights.yml')
+    config_file = open('lifelights.yml')
     settings = yaml.safe_load(config_file)
     config_file.close()
 
@@ -45,6 +45,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-except (KeyboardInterrupt, SystemExit):
-    print "Goodbye, hero."
+    try:
+        main()
+    except (KeyboardInterrupt, SystemExit):
+        print "Goodbye, hero."
