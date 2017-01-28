@@ -59,7 +59,7 @@ class WidthWatcher:
         if self.width == self._last_width:
             return
 
-        if abs(self._last_width - self.width) < (self._settings["change_threshold"]*1.0) / 100:
+        if abs(self._last_width - self.width) < (self._settings["change_threshold"] * 1.0) / 100:
             return
 
         percent = round(self.width * 100) / 100.0
@@ -84,11 +84,26 @@ class WidthWatcher:
                     if value == "RGB_PLACEHOLDER":
                         settings_copy["requests"][index]["payloads"][
                             payload] = rgb
+                    if value == "WIDTH_PLACEHOLDER":
+                        settings_copy["requests"][index]["payloads"][
+                            payload] = int(self.width)
+                    if value == "PERCENT_PLACEHOLDER":
+                        settings_copy["requests"][index]["payloads"][
+                            payload] = int((percent * 100))
+                    if value == "BRIGHTNESS_PLACEHOLDER":
+                        settings_copy["requests"][index]["payloads"][
+                            payload] = int((percent * 255))
 
                 if request["method"].upper() == "POST":
                     api_call = req.post(
                         request["endpoint"],
                         data=json.dumps(request["payloads"]))
+                if request["method"].upper() == "GET":
+                    api_call = req.get(
+                        request["endpoint"],
+                        data=request["payloads"])
+
+                if api_call:
                     Util.log("RESTful response %s" % api_call)
 
         except Exception, exc:

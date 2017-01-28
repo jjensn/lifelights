@@ -1,7 +1,4 @@
 ---
-# greenLower = (16,130,43)
-# greenUpper = (49,227,94)
-
 window_title: Heroes of the Storm
 scan_interval: 0.3
 watchers:
