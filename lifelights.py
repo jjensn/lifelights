@@ -16,11 +16,18 @@ def main():
     settings = yaml.safe_load(config_file)
     config_file.close()
 
+    config_error = Util.has_valid_config(settings)
+
+    if config_error:
+        Util.log("Error found in configuration file -- %s" % config_error)
+        sys.exit()
+
     spinner = itertools.cycle(['-', '/', '|', '\\'])
 
     watcher_list = [WidthWatcher(w) for w in settings["watchers"]]
 
-    window = Util.find_window_by_title(settings["window_title"])
+    window = Util.resize_capture_area(Util.find_window_by_title(
+        settings["window_title"]), settings)
 
     while True:
 
@@ -28,7 +35,6 @@ def main():
             sys.stdout.write("Waiting for window ... " + spinner.next() + "\r")
             sys.stdout.flush()
             window = Util.find_window_by_title(settings["window_title"])
-            #sys.stdout.write('\b')
             time.sleep(0.3)
             continue
 

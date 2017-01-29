@@ -1,6 +1,8 @@
 ---
 window_title: Heroes of the Storm
 scan_interval: 0.3
+quadrant_capture_count: 2
+quadrant_number: 2
 watchers:
   - name: 'Health'
     min_width: 10

@@ -23,12 +23,15 @@ Currently there is no input sanitation or verification, so drifting from the gui
 
 - **window_title** (string): Title of the window that will be monitored
 - **scan_interval** (float): Interval in seconds to take a screenshot
+- **quadrant_capture_count** (integer): Number of quadrants to capture on the screen. Can be 1, 2, or 4. See "Final notes" section for details.
+- **quadrant_number** (integer): Which quadrant to capture. See "Final notes" section for details.
 - **watchers**: List of different 'watchers' to calculate. For example, if there was a green health bar and a blue mana bar, you would add a separate entry for both. To avoid wasting resources, this uses the same screenshot for each watcher listed. That is to say, there won't be another screenshot taken until all the watchers are processed.
   - **name** (string): Common name of what you are monitoring. Used for logging but can be anything that makes sense to you
   - **min_width** (integer): Minimum number of pixels (width) of a horizontal bar (rectangle) needed to be considered a status bar. Helps prevent false positives for elements on the screen that are the same color as the status bar being monitored.
   - **change_threshold** (integer): Percentage (0-100) that determines when an API request should fire off. Prevents flooding the API endpoint with minor changes in health. For example, if this is set to 5, lights will only be updated on any 5% change to a health bar. 0 = don't throttle
   - **color_upper_limit**: Collection of R,G,B colors that sets the upper limit for the status bar to monitor. In layman's terms, "the lightest color the status bar will ever be".
   - **color_lower_limit**: Collection of R,G,B colors that sets the lower limit for the status bar to monitor. In layman's terms, "the darkest color the status bar will ever be".
+  - *Take note*: The tighter you can set the color boundaries, the less false positives the script will detect. Tweak as needed.
   - **requests**: List of RESTful events that should be fired when the ```change_threshold``` is passed
     - **endpoint** (string): API endpoint
     - **method** (string): POST or GET
@@ -40,8 +43,13 @@ Currently there is no input sanitation or verification, so drifting from the gui
 
 
 ### Final notes, thoughts and acknowledgements
+- ```quadrant_capture_count``` and ```quadrant_number``` were implemented as a way to help save computer resources and prevent false positives. The reasoning behind it is, if a user only cares about the bottom left corner of the screen, why save the whole screen in memory and process it if we don't need to?
+  - ```quadrant_capture_count``` can be either 1, 2 or 4. 1 tells the script that we only care about a single quadrant (top left, top right, bottom left, bottom right). 2 tells the script we care about 2 quadrants (either top or bottom). 4 is all 4 quadrants, or in other words, the entire screen.
+  - ```quadrant_number``` should change depending on the value of ```quadrant_capture_count```.
+    - If ```quadrant_capture_count = 1```, ```quadrant_number``` should be 1-4 (1 = top left, 2 = top right, 3 = bottom left, 4 = bottom right)
+    - If ```quadrant_capture_count = 2```, ```quadrant_number``` should be 1-2 (1 = top half, 2 = bottom half)
+    - ```quadrant_number``` is unused when ```quadrant_capture_count = 4``` (because it's the whole screen)
 - The detection of rectanges is dynamic, but by design detection of the screen is not. If the game window is moved after launch, scanning may return no results.
-- The tighter you can set the color boundaries, the less false positives the script will detect. Tweak as needed.
 - Try and find a good balance between ```scan_interval``` and ```change_threshold```, performance will be better and you won't slam the API endpoint.
 - You will, of course, need an API endpoint to use. I am a contributor to [Home Assistant](https://home-assistant.io/), and a big fan. With that said, this script was designed with Home Assistant in mind, but can of course work with any API endpoint.
 - The implementation would have been very different (ie: much worse) if it wasn't for [Adrian Rosebrock's article](http://www.pyimagesearch.com/2015/09/14/ball-tracking-with-opencv/) on tracking objects using Python.
@@ -59,12 +67,11 @@ Currently there is no input sanitation or verification, so drifting from the gui
 - How do I get the upper and lower bound colors?
   - Take a screenshot of your game, open in paint, color drop it, and find the RGB value. Move the saturaton slider up and down to get lighter and darker colors.
 
-### Todo
+### To-do
 - Add support for verticle rectanges
 - Add ability to pass configuration file via command line
-- Configuration validation
+- Better configuration validation
 - Cross platform support
-- Add configuration option to specify a specified screne quadrant
 
 ### Process overview
 

@@ -4,17 +4,64 @@ import time
 class Util:
 
     @classmethod
-    def current_date(self):
+    def current_date(cls):
         """Fetch the current date for logging."""
         return time.strftime("%c")
 
     @classmethod
-    def log(self, msg, level="DEBUG"):
+    def log(cls, msg, level="DEBUG"):
         """Logging wrapper."""
         print "[%s] %s %s" % (Util.current_date(), level.upper(), msg)
 
     @classmethod
-    def find_window_by_title(self, title):
+    def has_valid_config(cls, settings):
+        """Very basic sanity checks for the configuration options."""
+        if int(settings["quadrant_capture_count"]) == 3 or \
+                int(settings["quadrant_capture_count"]) > 4:
+            return "Invalid quadrant_capture_count value, must be 1, 2, or 4."
+        if int(settings["quadrant_capture_count"]) == 2 and \
+                not 1 <= int(settings["quadrant_number"]) <= 2:
+            return "Invalid quadrant_number value, must be 1 or 2."
+
+        return None
+
+    @classmethod
+    def resize_capture_area(cls, window_size, settings):
+        """Adjust the capture area based on the quadrants specified in the config."""
+        quadrant_capture_count = int(settings["quadrant_capture_count"])
+        quadrant_number = int(settings["quadrant_number"])
+
+        # Find a more elegant way to do this
+        if quadrant_capture_count == 1:
+            # User wants to capture 1 of the 4 quadrants
+            return {
+                # top left
+                '1': (window_size[0], window_size[1], window_size[2]/2, window_size[3]/2),
+                # top right
+                '2': (window_size[3]/2, window_size[1], window_size[2], window_size[3]/2),
+                # bottom left
+                '3': (window_size[0], window_size[3]/2, window_size[2]/2, window_size[3]),
+                # bottom right
+                '4': (window_size[2]/2, window_size[3]/2, window_size[2], window_size[3]),
+            }.get(quadrant_number, window_size)
+
+        if quadrant_capture_count == 2:
+            return {
+                # top
+                # left top right bottom
+                '1': (window_size[0], window_size[1], window_size[2], window_size[3]/2),
+                # bottom
+                '2': (window_size[0], window_size[3]/2, window_size[2], window_size[3]),
+                # bottom left
+                '3': (window_size[0], window_size[3]/2, window_size[2]/2, window_size[3]),
+                # bottom right
+                '4': (window_size[2]/2, window_size[3]/2, window_size[2], window_size[3]),
+            }.get(quadrant_number, window_size)
+
+        return window_size
+
+    @classmethod
+    def find_window_by_title(cls, title):
         """Find a Win32 window by title."""
         import win32gui
         import ctypes
@@ -49,7 +96,7 @@ class Util:
         return window_size
 
     @classmethod
-    def screenshot(self, window):
+    def screenshot(cls, window):
         """Take a screenshot of a particular portion of the screen."""
         import numpy as np
         import cv2

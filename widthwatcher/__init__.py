@@ -32,7 +32,7 @@ class WidthWatcher:
 
         if len(cnts) > 0:
             max_cnt = max(cnts, key=cv2.contourArea)
-            #x, y, w, h = cv2.boundingRect(c)
+            # x, y, w, h = cv2.boundingRect(c)
             _, _, width, _ = cv2.boundingRect(max_cnt)
 
             if (width - int(self._settings["min_width"])) >= 0:
@@ -59,10 +59,18 @@ class WidthWatcher:
         if self.width == self._last_width:
             return
 
-        if abs(self._last_width - self.width) < (self._settings["change_threshold"] * 1.0) / 100:
-            return
-
         percent = round(self.width * 100) / 100.0
+
+        if percent + (self._settings["change_threshold"] * 1.0) > 1.0:
+            # snap to 100%
+            percent = 1.0
+        elif percent - (self._settings["change_threshold"] * 1.0) < 0.0:
+            # snap to 0%
+            percent = 0.0
+
+        if abs(self._last_width - self.width) < (self._settings["change_threshold"] * 1.0) / 100 \
+                and 0.0 < percent < 1.0:
+            return
 
         if percent <= 0.0:
             Util.log("%s reached 0.0 -- did you die? :P" %
