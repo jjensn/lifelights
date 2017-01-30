@@ -79,7 +79,7 @@ Currently there is no input sanitation or verification, so drifting from the gui
 
 ![Detect health bar using RGB colors](http://i.imgur.com/rbIWEJr.png)
 
-The image above shows a visible rectangle being drawn around the scripts detected rectange. You can uncomment lines 35, 46-50 in the WidthWatcher module to draw a similar rectangle for your application. Good for troubleshooting.
+The image above shows a visible rectangle being drawn around the script detected rectange. You can uncomment lines 35, 46-50 in the WidthWatcher module to draw a similar rectangle for your application. Good for troubleshooting.
 
 ![Dynamically adjusts to the bar](http://i.imgur.com/ZVNUve9.png)
 
