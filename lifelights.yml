@@ -1,28 +1,57 @@
 ---
 window_title: Heroes of the Storm
-scan_interval: 0.3
+scan_interval: 0.1
 quadrant_capture_count: 2
 quadrant_number: 2
 watchers:
   - name: 'Health'
-    min_width: 10
-    change_threshold: 5
+    min_width: 20
+    change_threshold: 8
     color_upper_limit:
-      red: 94
-      green: 227
-      blue: 49
+      red: 82
+      green: 228
+      blue: 30
     color_lower_limit:
-      red: 43
-      green: 130
-      blue: 16
+      red: 53
+      green: 149
+      blue: 19
     requests:
       - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
         method: POST
+        delay: 0.1
         payloads:
           entity_id: 'light.office_1'
           rgb_color: 'RGB_PLACEHOLDER'
+          brightness: 255
       - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
         method: POST
+        delay: 0.0
         payloads:
           entity_id: 'light.office_2'
           rgb_color: 'RGB_PLACEHOLDER'
+          brightness: 255
+  # - name: 'Respawn time'
+  #   min_width: 50
+  #   change_threshold: 25
+  #   #always_on_screen: false
+  #   color_upper_limit:
+  #     red: 197
+  #     green: 58
+  #     blue: 147
+  #   color_lower_limit:
+  #     red: 177
+  #     green: 53
+  #     blue: 133
+  #   requests:
+  #     - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+  #       method: POST
+  #       payloads:
+  #         entity_id: 'light.office_1'
+  #         brightness: 'BRIGHTNESS_PLACEHOLDER'
+  #       delay: 0.0
+  #     - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+  #       method: POST
+  #       payloads:
+  #         entity_id: 'light.office_2'
+  #         brightness: 'BRIGHTNESS_PLACEHOLDER'
+  #       delay: 0.2

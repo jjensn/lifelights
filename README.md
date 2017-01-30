@@ -1,6 +1,8 @@
 # lifelights
 Control your home based on _any_ horizontal status bars by using simple screenshots.
 
+[![2 minute demo using Heroes of the Storm](http://img.youtube.com/vi/U1-Tj4fPKRE/0.jpg)](http://www.youtube.com/watch?v=U1-Tj4fPKRE "Heroes of the Storm + IoT")
+
 ### Requirements
 - Microsoft Windows
 - Python 2.7 [(link)](https://www.python.org/ftp/python/2.7/python-2.7.msi)
@@ -35,12 +37,12 @@ Currently there is no input sanitation or verification, so drifting from the gui
   - **requests**: List of RESTful events that should be fired when the ```change_threshold``` is passed
     - **endpoint** (string): API endpoint
     - **method** (string): POST or GET
+    - **delay** (float): Interval in seconds to sleep after sending the API request. Use 0.0 for no delay.
     - **payloads**: Collection of keys/values to send to the API endpoint. Currently supports the following special values:
       - *RGB_PLACEHOLDER*: Array of an RGB color, calculated using the percentage to fade from green -> yellow -> red
       - *WIDTH_PLACEHOLDER*: Integer of the current width of the status bar being monitored, in pixels
       - *PERCENT_PLACEHOLDER*: Integer (0-100) of the status bar percentage
       - *BRIGHTNESS_PLACEHOLDER*: Integer (0-255) of the status bar percentage
-
 
 ### Final notes, thoughts and acknowledgements
 - ```quadrant_capture_count``` and ```quadrant_number``` were implemented as a way to help save computer resources and prevent false positives. The reasoning behind it is, if a user only cares about the bottom left corner of the screen, why save the whole screen in memory and process it if we don't need to?
