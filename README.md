@@ -1,5 +1,5 @@
 # lifelights
-Control your home based on _any_ horizontal status bars by using simple screenshots.
+Control your home based on _any_ horizontal rectangles by using simple screenshots.
 
 [![2 minute demo using Heroes of the Storm](http://img.youtube.com/vi/U1-Tj4fPKRE/0.jpg)](http://www.youtube.com/watch?v=U1-Tj4fPKRE "Heroes of the Storm + IoT")
 
@@ -70,7 +70,7 @@ Currently there is no input sanitation or verification, so drifting from the gui
   - Take a screenshot of your game, open in paint, color drop it, and find the RGB value. Move the saturaton slider up and down to get lighter and darker colors.
 
 ### To-do
-- Add support for verticle rectanges
+- Add support for verticle rectangles
 - Add ability to pass configuration file via command line
 - Better configuration validation
 - Cross platform support
