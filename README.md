@@ -67,7 +67,7 @@ Currently there is no input sanitation or verification, so drifting from the gui
 - My 'xyz home autiomation component' isn't updating fast enough
   - Sorry about that, there isn't anything that can be done once the API request is fired off. You can see the time it was fired off in the output window of the script.
 - Does it work with ... ?
-  - As long as the game or application can be set to windowed mode, and as long as what you are trying to measure the width of a rectangle, then yes, this should work just fine.
+  - As long as the game or application can be set to windowed mode, and as long as you are trying to measure the width of a rectangle, then yes, this should work just fine.
 - How do I get the upper and lower bound colors?
   - Take a screenshot of your game, open in paint, color drop it, and find the RGB value. Move the saturaton slider up and down to get lighter and darker colors.
 
