@@ -1,7 +1,7 @@
 # lifelights
 Control your home based on _any_ horizontal rectangles by using simple screenshots.
 
-### 2 minute demo
+### 2 minute video
 [![2 minute demo using Heroes of the Storm](http://img.youtube.com/vi/U1-Tj4fPKRE/0.jpg)](http://www.youtube.com/watch?v=U1-Tj4fPKRE "Heroes of the Storm + IoT")
 
 ### Requirements
