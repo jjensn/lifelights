@@ -4,7 +4,7 @@ scan_interval: 0.1
 quadrant_capture_count: 1
 quadrant_number: 3
 watchers:
-  - name: 'Health'
+  - name: 'HP'
     min_width: 20
     change_threshold: 1
     color_upper_limit:
@@ -16,20 +16,19 @@ watchers:
       green: 120
       blue: 18
     requests:
-      - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
-        method: POST
-        delay: 0.1
-        payloads:
-          entity_id: 'light.office_1'
-          rgb_color: 'RGB_PLACEHOLDER'
-          brightness: 255
-      - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
-        method: POST
-        delay: 0.0
-        payloads:
-          entity_id: 'light.office_2'
-          rgb_color: 'RGB_PLACEHOLDER'
-          brightness: 255
+     - endpoint: 'localhost'
+       port: 7110
+       method: OSC
+       delay: 0.01
+       payloads:
+         width: RAW_PERCENT_PLACEHOLDER
+#    - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+#      method: POST
+#      delay: 0.0
+#      payloads:
+#        entity_id: 'light.office_2'
+#        rgb_color: 'RGB_PLACEHOLDER'
+#        brightness: 255
   # - name: 'Respawn time'
   #   min_width: 50
   #   change_threshold: 25

@@ -20,6 +20,7 @@ Control your home based on _any_ horizontal rectangles by using simple screensho
 - Not compatible with OSX
 - Game must be run as "windowed fullscreen" or "windowed"
 - API POST requests will always be in JSON format
+- OSC messages will be an array, not a dictionary, with the name of the field before the field value.
 
 ### Configuration details
 Currently there is no input sanitation or verification, so drifting from the guidlines below will likely break the script.
@@ -35,15 +36,16 @@ Currently there is no input sanitation or verification, so drifting from the gui
   - **color_upper_limit**: Collection of R,G,B colors that sets the upper limit for the status bar to monitor. In layman's terms, "the lightest color the status bar will ever be".
   - **color_lower_limit**: Collection of R,G,B colors that sets the lower limit for the status bar to monitor. In layman's terms, "the darkest color the status bar will ever be".
   - *Take note*: The tighter you can set the color boundaries, the less false positives the script will detect. Tweak as needed.
-  - **requests**: List of RESTful events that should be fired when the ```change_threshold``` is passed
+  - **requests**: List of RESTful events or OSC messages that should be fired when the ```change_threshold``` is passed
     - **endpoint** (string): API endpoint
-    - **method** (string): POST or GET
+    - **method** (string): POST or GET for REST, OSC for OSC
     - **delay** (float): Interval in seconds to sleep after sending the API request. Use 0.0 for no delay.
     - **payloads**: Collection of keys/values to send to the API endpoint. Currently supports the following special values:
       - *RGB_PLACEHOLDER*: Array of an RGB color, calculated using the percentage to fade from green -> yellow -> red
       - *WIDTH_PLACEHOLDER*: Integer of the current width of the status bar being monitored, in pixels
       - *PERCENT_PLACEHOLDER*: Integer (0-100) of the status bar percentage
       - *BRIGHTNESS_PLACEHOLDER*: Integer (0-255) of the status bar percentage
+      - *RAW_PERCENT_PLACEHOLDER*: Floating point (0-1) of the status bar percentage
 
 ### Final notes, thoughts and acknowledgements
 - ```quadrant_capture_count``` and ```quadrant_number``` were implemented as a way to help save computer resources and prevent false positives. The reasoning behind it is, if a user only cares about the bottom left corner of the screen, why save the whole screen in memory and process it if we don't need to?
@@ -60,11 +62,11 @@ Currently there is no input sanitation or verification, so drifting from the gui
 
 ### FAQ (well, what I can imagine is going to be asked)
 - Can I get banned for using this?
-  - I don't know buddy, I'm not a wizard. From a technical standpoint, the script just takes a screenshot. So if screenshots are bannable, then probably, yes.
+  - I don't know buddy, I'm not a wizard. From a technical standpoint, the script just takes a screenshot and does not read any memory from the game itself. So if screenshots are bannable, then probably, yes.
 - You know what would be really cool is if you ...
   - Yes that would be cool. [I accept pull requests](https://help.github.com/articles/creating-a-pull-request/). I also accept Venmo if you can't write the feature yourself.
 - Are there performance implications by using this?
-  - I didn't see any, but your experience is going to based on your computer, and what configuration options used.
+  - I didn't see any, but your experience is going to based on your computer, and what configuration options used. You should not notice anything if you have an idle CPU core available, as the image processing runs single-threaded in a separate process.
 - My 'xyz home autiomation component' isn't updating fast enough
   - Sorry about that, there isn't anything that can be done once the API request is fired off. You can see the time it was fired off in the output window of the script.
 - Does it work with ... ?
