@@ -36,26 +36,28 @@ class Util:
             # User wants to capture 1 of the 4 quadrants
             return {
                 # top left
-                '1': (window_size[0], window_size[1], window_size[2]/2, window_size[3]/2),
+                1: (window_size[0], window_size[1], window_size[2]/2, window_size[3]/2),
                 # top right
-                '2': (window_size[3]/2, window_size[1], window_size[2], window_size[3]/2),
+                2: (window_size[3]/2, window_size[1], window_size[2], window_size[3]/2),
                 # bottom left
-                '3': (window_size[0], window_size[3]/2, window_size[2]/2, window_size[3]),
+                # tighter region for hots health bar (0, y * .8, x * .25, y)
+                # 3: (window_size[0], window_size[3] * 0.8, window_size[2] * 0.25, window_size[3]),
+                3: (window_size[0], window_size[3]/2, window_size[2]/2, window_size[3]),
                 # bottom right
-                '4': (window_size[2]/2, window_size[3]/2, window_size[2], window_size[3]),
+                4: (window_size[2]/2, window_size[3]/2, window_size[2], window_size[3]),
             }.get(quadrant_number, window_size)
 
         if quadrant_capture_count == 2:
             return {
                 # top
                 # left top right bottom
-                '1': (window_size[0], window_size[1], window_size[2], window_size[3]/2),
+                1: (window_size[0], window_size[1], window_size[2], window_size[3]/2),
                 # bottom
-                '2': (window_size[0], window_size[3]/2, window_size[2], window_size[3]),
+                2: (window_size[0], window_size[3]/2, window_size[2], window_size[3]),
                 # bottom left
-                '3': (window_size[0], window_size[3]/2, window_size[2]/2, window_size[3]),
+                3: (window_size[0], window_size[3]/2, window_size[2]/2, window_size[3]),
                 # bottom right
-                '4': (window_size[2]/2, window_size[3]/2, window_size[2], window_size[3]),
+                4: (window_size[2]/2, window_size[3]/2, window_size[2], window_size[3]),
             }.get(quadrant_number, window_size)
 
         return window_size
