@@ -1,33 +1,27 @@
 ---
-window_title: Overwatch
+window_title: Heroes of the Storm
 scan_interval: 5
 quadrant_capture_count: 1
 quadrant_number: 3
 watchers:
-  - name: test
-    min_width: 1
-    change_threshold: 5
-    # 230 204 145
-    # 226 202 132
-    # 158,39,16
-    # 199,95,17
-    # 9  36 217
-    # #DA2174
-    color_lower_limit:
-      red: 185  
-      green: 185
-      blue: 185
-    color_upper_limit:
-      red: 255
-      green: 255
-      blue: 255
-    requests:
-      - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
-        method: POST
-        payloads:
-          entity_id: 'light.office_1'
-          brightness: 'BRIGHTNESS_PLACEHOLDER'
-        delay: 5.0
+  # - name: test
+  #   min_width: 1
+  #   change_threshold: 5
+  #   color_lower_limit:
+  #     red: 185  
+  #     green: 185
+  #     blue: 185
+  #   color_upper_limit:
+  #     red: 255
+  #     green: 255
+  #     blue: 255
+  #   requests:
+  #     - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+  #       method: POST
+  #       payloads:
+  #         entity_id: 'light.office_1'
+  #         brightness: 'BRIGHTNESS_PLACEHOLDER'
+  #       delay: 5.0
   # - name: 'Respawn time'
   #   min_width: 50
   #   change_threshold: 5
@@ -53,29 +47,29 @@ watchers:
   #         entity_id: 'light.office_2'
   #         brightness: 'BRIGHTNESS_PLACEHOLDER'
   #       delay: 0.2
-  # - name: 'Health'
-  #   min_width: 20
-  #   change_threshold: 5
-  #   color_upper_limit:
-  #     red: 82
-  #     green: 228
-  #     blue: 30
-  #   color_lower_limit:
-  #     red: 53
-  #     green: 149
-  #     blue: 19
-  #   requests:
-  #     - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
-  #       method: POST
-  #       delay: 0.1
-  #       payloads:
-  #         entity_id: 'light.office_1'
-  #         rgb_color: 'RGB_PLACEHOLDER'
-  #         brightness: 255
-  #     - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
-  #       method: POST
-  #       delay: 0.0
-  #       payloads:
-  #         entity_id: 'light.office_2'
-  #         rgb_color: 'RGB_PLACEHOLDER'
-  #         brightness: 255
+    - name: 'Health'
+      min_width: 20
+      change_threshold: 5
+      color_upper_limit:
+        red: 82
+        green: 228
+        blue: 30
+      color_lower_limit:
+        red: 53
+        green: 149
+        blue: 19
+      requests:
+        - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+          method: POST
+          delay: 0.1
+          payloads:
+            entity_id: 'light.office_1'
+            rgb_color: 'RGB_PLACEHOLDER'
+            brightness: 255
+        - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+          method: POST
+          delay: 0.0
+          payloads:
+            entity_id: 'light.office_2'
+            rgb_color: 'RGB_PLACEHOLDER'
+            brightness: 255

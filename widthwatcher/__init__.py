@@ -41,9 +41,11 @@ class WidthWatcher:
         #screen = cv2.imread('full_full.png')
         #hsv = cv2.cvtColor(screen, cv2.COLOR_BGR2HSV)
         kernel = np.ones((10,10),np.uint8)
-        #dilation = cv2.dilate(hsv,kernel,iterations = 1)
-        dilation = cv2.morphologyEx(screen, cv2.MORPH_CLOSE, kernel)
-        blur = cv2.medianBlur(dilation,1)
+        #dilation = cv2.dilate(screen,kernel,iterations = 1)
+        #blur = cv2.morphologyEx(screen, cv2.MORPH_CLOSE, kernel)
+        blur = cv2.medianBlur(screen,5)
+        #blur = cv2.dilate(screen,kernel,iterations = 1)
+        #blur = dilation
         #hsv = cv2.cvtColor(closing, cv2.COLOR_BGR2HSV)
         #edges = cv2.Canny(closing,200,300)
 
@@ -73,6 +75,9 @@ class WidthWatcher:
 
         image_mask = cv2.inRange(blur, self._lower_bounds,  self._upper_bounds)
 
+        cv2.imshow("bingo!", blur)
+        cv2.waitKey(10)
+
         #cv2.imshow("bingo!", image_mask)
         #cv2.waitKey(0)
         
@@ -96,7 +101,7 @@ class WidthWatcher:
             #cv2.drawContours(blur, cnts, -1, (0,255,0), 3)
             cv2.rectangle(blur,(x,y),(x+w,y+h),(0,255,0),2)
             cv2.imshow("bingo!", blur)
-            cv2.waitKey(1)
+            cv2.waitKey(10)
             #quit()
 
         else:
