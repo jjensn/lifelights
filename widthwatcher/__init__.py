@@ -43,7 +43,7 @@ class WidthWatcher:
                                 cv2.CHAIN_APPROX_SIMPLE)[-2]
         if len(cnts) > 0:
             max_cnt = max(cnts, key=cv2.contourArea)
-            x, y, w, h = cv2.boundingRect(max_cnt)
+            # x, y, w, h = cv2.boundingRect(max_cnt)
             _, _, width, _ = cv2.boundingRect(max_cnt)
 
             if (width - int(self._settings["min_width"])) >= 0:
