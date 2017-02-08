@@ -9,12 +9,12 @@ watchers:
     change_threshold: 1
     color_upper_limit:
       red: 82
-      green: 230
-      blue: 35
+      green: 228
+      blue: 30
     color_lower_limit:
       red: 53
-      green: 120
-      blue: 18
+      green: 149
+      blue: 19
     requests:
       - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
         method: POST
