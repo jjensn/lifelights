@@ -44,7 +44,9 @@ def main():
 
         time.sleep(float(settings["scan_interval"]))
 
+
         screen = Util.screenshot(window)
+        #screen = None 
 
         if not screen.any():
             continue
