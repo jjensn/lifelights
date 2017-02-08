@@ -64,11 +64,10 @@ class WidthWatcher:
         self._osc_client.send(msg)
         #Util.log("Sent message %s to %s:%i" % (msg, address, port))
 
-
     def process(self):
         """Execute RESTful API calls based on the results of an image scan."""
         import copy
-        
+
         percent = round((self._width * 1.0) / (self._max_width * 1.0), 2)
 
         if self._last_percentage == percent:
@@ -97,7 +96,7 @@ class WidthWatcher:
                 int(255 * (100 - (percent * 100)) / 100),
                 int(255 * (percent * 100) / 100), 0
             ]
-            
+
             settings_copy = copy.deepcopy(self._settings)
 
             for index, request in enumerate(settings_copy["requests"]):
