@@ -1,10 +1,8 @@
 import requests as req
 import json
 import time
-
-
+import OSC
 from util import Util
-
 
 class WidthWatcher:
     """Performs scanning and sizing of an image based on upper and lower bounds of colors."""
@@ -21,6 +19,7 @@ class WidthWatcher:
 
         self._max_width = 1.0
         self._width = 0.0
+        self._osc_enabled = False
 
         self._last_percentage = 0.0
 
@@ -53,6 +52,17 @@ class WidthWatcher:
 
         else:
             self._width = 0.0
+
+    def sendOSC(self, address, port, msg):
+        if not self._osc_enabled:
+            self._osc_client = OSC.OSCClient()
+            self._osc_client.connect((address, int(port)))
+            self._osc_enabled = True
+
+            Util.log("Started OSC client streaming to %s:%i" % (address, port))
+
+        self._osc_client.send(msg)
+        #Util.log("Sent message %s to %s:%i" % (msg, address, port))
 
     def process(self):
         """Execute RESTful API calls based on the results of an image scan."""
@@ -103,6 +113,9 @@ class WidthWatcher:
                     if value == "BRIGHTNESS_PLACEHOLDER":
                         settings_copy["requests"][index]["payloads"][
                             payload] = int((percent * 255))
+                    if value == "RAW_PERCENT_PLACEHOLDER":
+                        settings_copy["requests"][index]["payloads"][
+                            payload] = percent
 
                 if request["method"].upper() == "POST":
                     # print json.dumps(request["payloads"])
@@ -113,6 +126,13 @@ class WidthWatcher:
                     api_call = req.get(
                         request["endpoint"],
                         data=request["payloads"])
+                if request["method"].upper() == "OSC":
+                    # osc streaming output
+                    msg = OSC.OSCMessage()
+                    msg.append(request["payloads"])
+                    msg.setAddress("/" + settings_copy["name"])
+                    self.sendOSC(request["endpoint"], request["port"], msg)
+                    api_call = None
 
                 if api_call:
                     Util.log("RESTful response %s" % api_call)
@@ -122,3 +142,6 @@ class WidthWatcher:
         except Exception, exc:
             Util.log("Error firing an event for %s, event: %s" %
                      (self._settings["name"], exc))
+
+    def name(self):
+        return self.watcher_conf["name"]
