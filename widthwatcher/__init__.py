@@ -4,6 +4,7 @@ import time
 import OSC
 from util import Util
 
+
 class WidthWatcher:
     """Performs scanning and sizing of an image based on upper and lower bounds of colors."""
 
@@ -101,21 +102,24 @@ class WidthWatcher:
 
             for index, request in enumerate(settings_copy["requests"]):
                 for payload, value in request["payloads"].items():
-                    if value == "RGB_PLACEHOLDER":
+                    if value == "LIFELIGHT_RGB":
                         settings_copy["requests"][index]["payloads"][
                             payload] = rgb
-                    if value == "WIDTH_PLACEHOLDER":
+                    if value == "LIFELIGHT_RECT_WIDTH":
                         settings_copy["requests"][index]["payloads"][
                             payload] = int(self._width)
-                    if value == "PERCENT_PLACEHOLDER":
+                    if value == "LIFELIGHT_PERCENT":
                         settings_copy["requests"][index]["payloads"][
                             payload] = int((percent * 100))
-                    if value == "BRIGHTNESS_PLACEHOLDER":
-                        settings_copy["requests"][index]["payloads"][
-                            payload] = int((percent * 255))
-                    if value == "RAW_PERCENT_PLACEHOLDER":
+                    # if value == "LIFELIGHT_RECT":
+                    #     settings_copy["requests"][index]["payloads"][
+                    #         payload] = int((percent * 255))
+                    if value == "LIFELIGHT_RAW_PERCENT":
                         settings_copy["requests"][index]["payloads"][
                             payload] = percent
+
+                if float(request["pre_api_delay"]):
+                    time.sleep(float(request["pre_api_delay"]))
 
                 if request["method"].upper() == "POST":
                     # print json.dumps(request["payloads"])
@@ -137,7 +141,8 @@ class WidthWatcher:
                 if api_call:
                     Util.log("RESTful response %s" % api_call)
 
-                time.sleep(float(request["delay"]))
+                if float(request["post_api_delay"]):
+                    time.sleep(float(request["post_api_delay"]))
 
         except Exception, exc:
             Util.log("Error firing an event for %s, event: %s" %

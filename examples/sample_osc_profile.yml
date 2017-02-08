@@ -16,12 +16,12 @@ watchers:
       green: 120
       blue: 18
     requests:
-     - endpoint: 'localhost'
-       port: 7110
-       method: OSC
-       delay: 0.01
-       payloads:
-         width: RAW_PERCENT_PLACEHOLDER
+      - endpoint: 'localhost'
+        port: 7110
+        method: OSC
+        delay: 0.01
+        payloads:
+          width: RAW_PERCENT_PLACEHOLDER
 #    - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
 #      method: POST
 #      delay: 0.0

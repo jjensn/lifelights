@@ -12,7 +12,23 @@ sys.path.append(
 
 def main():
     """Main entrypoint for script."""
-    config_file = open('lifelights.yml')
+    profiles = next(os.walk('profiles'))[2]
+
+    if len(profiles) == 0:
+        print "Unable to locate any game profiles in the profiles directory"
+        sys.exit()
+
+    for index, profile in enumerate(profiles):
+        # Use the filename as the name of the profile
+        print "%d - %s" % (index+1, profile.replace("_", " ").rsplit('.', 1)[0].title())
+
+    profile_id = int(input('Enter the profile number to load: ')) - 1
+
+    if profile_id > len(profiles) or profile_id <= 0:
+        print "Profile number out of range, must be between 1 and %d" % len(profiles)
+        sys.exit()
+
+    config_file = open("profiles/%s" % profiles[profile_id])
     settings = yaml.safe_load(config_file)
     config_file.close()
 

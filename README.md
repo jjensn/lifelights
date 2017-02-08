@@ -15,6 +15,7 @@ Control your home based on _any_ horizontal rectangles by using simple screensho
 
 ### Usage
 - Double click on 'lifelights.py' in Windows Explorer or run python lifelights.py from the command-line
+- Enter the profile number when prompted
 
 ### Known limitations
 - Not compatible with OSX
@@ -22,7 +23,7 @@ Control your home based on _any_ horizontal rectangles by using simple screensho
 - API POST requests will always be in JSON format
 - OSC messages will be an array, not a dictionary, with the name of the field before the field value.
 
-### Configuration details
+### Profile configuration details
 Currently there is no input sanitation or verification, so drifting from the guidlines below will likely break the script.
 
 - **window_title** (string): Title of the window that will be monitored
@@ -39,13 +40,13 @@ Currently there is no input sanitation or verification, so drifting from the gui
   - **requests**: List of RESTful events or OSC messages that should be fired when the ```change_threshold``` is passed
     - **endpoint** (string): API endpoint
     - **method** (string): POST or GET for REST, OSC for OSC
-    - **delay** (float): Interval in seconds to sleep after sending the API request. Use 0.0 for no delay.
+    - **pre_api_delay** (float): Interval in seconds to sleep before sending the API request. Use 0.0 for no delay.
+    - **post_api_delay** (float): Interval in seconds to sleep after sending the API request. Use 0.0 for no delay.
     - **payloads**: Collection of keys/values to send to the API endpoint. Currently supports the following special values:
-      - *RGB_PLACEHOLDER*: Array of an RGB color, calculated using the percentage to fade from green -> yellow -> red
-      - *WIDTH_PLACEHOLDER*: Integer of the current width of the status bar being monitored, in pixels
-      - *PERCENT_PLACEHOLDER*: Integer (0-100) of the status bar percentage
-      - *BRIGHTNESS_PLACEHOLDER*: Integer (0-255) of the status bar percentage
-      - *RAW_PERCENT_PLACEHOLDER*: Floating point (0-1) of the status bar percentage
+      - *LIFELIGHT_RGB*: Array of an RGB color, calculated using the percentage to fade from green -> yellow -> red
+      - *LIFELIGHT_RECT_WIDTH*: Integer of the current width of the status bar being monitored, in pixels
+      - *LIFELIGHT_PERCENT*: Integer (0-100) of the status bar percentage
+      - *LIFELIGHT_RAW_PERCENT*: Floating point (0-1) of the status bar percentage
 
 ### Final notes, thoughts and acknowledgements
 - ```quadrant_capture_count``` and ```quadrant_number``` were implemented as a way to help save computer resources and prevent false positives. The reasoning behind it is, if a user only cares about the bottom left corner of the screen, why save the whole screen in memory and process it if we don't need to?
