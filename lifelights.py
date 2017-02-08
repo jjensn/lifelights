@@ -46,7 +46,6 @@ def main():
 
 
         screen = Util.screenshot(window)
-        #screen = None 
 
         if not screen.any():
             continue

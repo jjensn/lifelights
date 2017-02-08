@@ -35,52 +35,9 @@ class WidthWatcher:
     def scan(self, screen):
         """Scan an image and attempt to fit an invisible rectangle around a group of colors."""
         import cv2
-        #screen = cv2.imread('full_half.png')
-        #bgr_screen = cv2.cvtColor(np.array(screen), cv2.COLOR_RGB2BGR)
-        #screen = cv2.imread('full_full.png')
-        #screen = cv2.imread('full_full.png')
-        #hsv = cv2.cvtColor(screen, cv2.COLOR_BGR2HSV)
-        kernel = np.ones((10,10),np.uint8)
-        #dilation = cv2.dilate(screen,kernel,iterations = 1)
-        #blur = cv2.morphologyEx(screen, cv2.MORPH_CLOSE, kernel)
-        blur = cv2.medianBlur(screen,5)
-        #blur = cv2.dilate(screen,kernel,iterations = 1)
-        #blur = dilation
-        #hsv = cv2.cvtColor(closing, cv2.COLOR_BGR2HSV)
-        #edges = cv2.Canny(closing,200,300)
-
-        # cv2.imshow("bingoasdf!", imagem)
-        # cv2.waitKey(0)
-
-        # template = cv2.imread('ow.png',0)
-        # img_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-        # w, h = template.shape[::-1]
-
-        # res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-        # threshold = 0.8
-        # loc = np.where( res >= threshold)
-        # for pt in zip(*loc[::-1]):
-        #     cv2.rectangle(screen, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-        
-        # print len(zip(*loc[::-1]))
-
-        # cv2.imshow("bingoasdf!",screen)
-        # cv2.waitKey(0)
-
-        #median2 = cv2.bilateralFilter(median, 10, 75,75)
-
-        #cv2.imshow("bingo!", blur)
-        #cv2.waitKey(0)
-        #quit()
+        blur = cv2.medianBlur(screen, 11)
 
         image_mask = cv2.inRange(blur, self._lower_bounds,  self._upper_bounds)
-
-        cv2.imshow("bingo!", blur)
-        cv2.waitKey(10)
-
-        #cv2.imshow("bingo!", image_mask)
-        #cv2.waitKey(0)
-        
 
         cnts = cv2.findContours(image_mask.copy(), cv2.RETR_EXTERNAL,
                                 cv2.CHAIN_APPROX_SIMPLE)[-2]
@@ -98,11 +55,11 @@ class WidthWatcher:
                 self._width = float(width)
 
             # uncomment for debugging purposes
-            #cv2.drawContours(blur, cnts, -1, (0,255,0), 3)
-            cv2.rectangle(blur,(x,y),(x+w,y+h),(0,255,0),2)
-            cv2.imshow("bingo!", blur)
-            cv2.waitKey(10)
-            #quit()
+            # cv2.drawContours(blur, cnts, -1, (0,255,0), 3)
+            # cv2.rectangle(blur,(x,y),(x+w,y+h),(0,255,0),2)
+            # cv2.imshow("bingo!", blur)
+            # cv2.waitKey(10)
+            # quit()
 
         else:
             self._width = 0.0
@@ -158,7 +115,6 @@ class WidthWatcher:
                             payload] = int((percent * 255))
 
                 if request["method"].upper() == "POST":
-                    # print json.dumps(request["payloads"])
                     api_call = req.post(
                         request["endpoint"],
                         data=json.dumps(request["payloads"]))
