@@ -24,7 +24,7 @@ def main():
 
     profile_id = int(input('Enter the profile number to load: ')) - 1
 
-    if profile_id > len(profiles) or profile_id <= 0:
+    if profile_id > len(profiles) or profile_id < 0:
         print "Profile number out of range, must be between 1 and %d" % len(profiles)
         sys.exit()
 
