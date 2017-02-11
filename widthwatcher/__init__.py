@@ -155,7 +155,4 @@ class WidthWatcher:
 
         except Exception, exc:
             Util.log("Error firing an event for %s, event: %s" %
-                     (self._settings["name"], exc))
-
-    def name(self):
-        return self.watcher_conf["name"]
+                     (self._settings["name"], str(exc)))
