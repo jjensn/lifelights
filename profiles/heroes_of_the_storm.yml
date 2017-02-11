@@ -21,10 +21,10 @@ watchers:
         delay: 0.0
         payloads:
           entity_id: 'light.office_1'
-          rgb_color: 'RGB_PLACEHOLDER'
+          rgb_color: 'LIFELIGHT_RGB'
       - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
         method: POST
         delay: 0.0
         payloads:
           entity_id: 'light.office_2'
-          rgb_color: 'RGB_PLACEHOLDER'
+          rgb_color: 'LIFELIGHT_RGB'

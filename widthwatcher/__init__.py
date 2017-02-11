@@ -56,7 +56,7 @@ class WidthWatcher:
 
             # uncomment for debugging purposes
             # cv2.drawContours(blur, cnts, -1, (0,255,0), 3)
-            # cv2.rectangle(blur,(x,y),(x+w,y+h),(0,255,0),2)
+            # cv2.rectangle(blur, (x, y), (x + w, y + h), (0, 255, 0), 2)
             # cv2.imshow("bingo!", blur)
             # cv2.waitKey(10)
             # quit()
@@ -128,7 +128,7 @@ class WidthWatcher:
                         settings_copy["requests"][index]["payloads"][
                             payload] = percent
 
-                if float(request["pre_api_delay"]):
+                if "pre_api_delay" in request:
                     time.sleep(float(request["pre_api_delay"]))
 
                 if request["method"].upper() == "POST":
@@ -150,7 +150,7 @@ class WidthWatcher:
                 if api_call:
                     Util.log("RESTful response %s" % api_call)
 
-                if float(request["post_api_delay"]):
+                if "post_api_delay" in request:
                     time.sleep(float(request["post_api_delay"]))
 
         except Exception, exc:
