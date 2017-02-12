@@ -2,6 +2,7 @@ import requests as req
 import json
 import time
 import OSC
+import numpy as np
 from util import Util
 
 
@@ -18,62 +19,47 @@ class WidthWatcher:
                               watcher_conf["color_lower_limit"]["green"],
                               watcher_conf["color_lower_limit"]["red"])
 
-        # self._upper_bounds = (watcher_conf["color_upper_limit"]["red"],
-        #                       watcher_conf["color_upper_limit"]["green"],
-        #                       watcher_conf["color_upper_limit"]["blue"])
-
-        # self._lower_bounds = (watcher_conf["color_lower_limit"]["red"],
-        #                       watcher_conf["color_lower_limit"]["green"],
-        #                       watcher_conf["color_lower_limit"]["blue"])
-
         self._max_width = 1.0
         self._width = 0.0
-        self._osc_enabled = False
+        self._osc_client = None
 
         self._last_percentage = 0.0
+
+        self._debug = "debug" in self._settings and self._settings["debug"]
 
     def scan(self, screen):
         """Scan an image and attempt to fit an invisible rectangle around a group of colors."""
         import cv2
-        blur = cv2.medianBlur(screen, 11)
+        blur = cv2.medianBlur(screen, 35)
+        final_image = blur
 
-        image_mask = cv2.inRange(blur, self._lower_bounds,  self._upper_bounds)
+        image_mask = cv2.inRange(
+            final_image, self._lower_bounds, self._upper_bounds)
 
         cnts = cv2.findContours(image_mask.copy(), cv2.RETR_EXTERNAL,
                                 cv2.CHAIN_APPROX_SIMPLE)[-2]
         if len(cnts) > 0:
             max_cnt = max(cnts, key=cv2.contourArea)
-            # x, y, w, h = cv2.boundingRect(max_cnt)
-            _, _, width, _ = cv2.boundingRect(max_cnt)
+            left, top, width, height = cv2.boundingRect(max_cnt)
 
-            if (width - int(self._settings["min_width"])) >= 0:
-                if self._max_width < width:
-                    self._max_width = float(width)
+            if self._max_width < width:
+                self._max_width = float(width)
+                if self._debug:
                     Util.log("Max %s updated %d" %
                              (self._settings["name"], width))
 
-                self._width = float(width)
+            self._width = float(width)
 
-            # uncomment for debugging purposes
-            # cv2.drawContours(blur, cnts, -1, (0,255,0), 3)
-            # cv2.rectangle(blur, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            # cv2.imshow("bingo!", blur)
-            # cv2.waitKey(10)
-            # quit()
-
+            if self._debug:
+                cv2.rectangle(final_image, (left, top),
+                              (left + width, top + height), (0, 255, 0), 2)
         else:
             self._width = 0.0
 
-    def sendOSC(self, address, port, msg):
-        if not self._osc_enabled:
-            self._osc_client = OSC.OSCClient()
-            self._osc_client.connect((address, int(port)))
-            self._osc_enabled = True
-
-            Util.log("Started OSC client streaming to %s:%i" % (address, port))
-
-        self._osc_client.send(msg)
-        #Util.log("Sent message %s to %s:%i" % (msg, address, port))
+        if self._debug:
+            # cv2.drawContours(closing, cnts, -1, (0,255,0), 3)
+            cv2.imshow(self._settings["name"], final_image)
+            cv2.waitKey(100)
 
     def process(self):
         """Execute RESTful API calls based on the results of an image scan."""
@@ -98,9 +84,10 @@ class WidthWatcher:
 
         if percent <= 0.0:
             Util.log("%s reached 0.0" %
-                     self._settings["name"])
+                     self._settings["name"], "INFO")
         else:
-            Util.log("%s updated to %.2f" % (self._settings["name"], percent))
+            Util.log("%s updated to %.2f" %
+                     (self._settings["name"], percent), "INFO")
 
         try:
             rgb = [
@@ -131,6 +118,9 @@ class WidthWatcher:
                 if "pre_api_delay" in request:
                     time.sleep(float(request["pre_api_delay"]))
 
+                if self._debug:
+                    Util.log("sending %s" % json.dumps(request["payloads"]))
+
                 if request["method"].upper() == "POST":
                     api_call = req.post(
                         request["endpoint"],
@@ -141,13 +131,19 @@ class WidthWatcher:
                         data=request["payloads"])
                 if request["method"].upper() == "OSC":
                     # osc streaming output
-                    msg = OSC.OSCMessage()
+                    address = request["endpoint"]
+                    port = request["port"]
+                    msg = OSC.OSCMessage("/" + settings_copy["name"])
                     msg.append(request["payloads"])
-                    msg.setAddress("/" + settings_copy["name"])
-                    self.sendOSC(request["endpoint"], request["port"], msg)
+
+                    if not self._osc_client:
+                        self._osc_client = OSC.OSCClient()
+                        self._osc_client.connect((address, int(port)))
+
+                    Util.send_osc(self._osc_client, msg)
                     api_call = None
 
-                if api_call:
+                if api_call and self._debug == "true":
                     Util.log("RESTful response %s" % api_call)
 
                 if "post_api_delay" in request:
@@ -155,4 +151,4 @@ class WidthWatcher:
 
         except Exception, exc:
             Util.log("Error firing an event for %s, event: %s" %
-                     (self._settings["name"], str(exc)))
+                     (self._settings["name"], str(exc)), "ERROR")
