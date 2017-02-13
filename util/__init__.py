@@ -41,11 +41,11 @@ class Util:
                 2: (window_size[3] / 2, window_size[1], window_size[2], window_size[3] / 2),
                 # bottom left
                 # tighter region for hots health bar (0, y * .8, x * .25, y)
-                # 3: (window_size[0], window_size[3] * 0.8, window_size[2] *
-                # 0.25, window_size[3]),
-                3: (window_size[0] / 7, window_size[3] - (window_size[3] / 6), window_size[2] / 4, window_size[3]),
+                # 3: (window_size[0], window_size[3] * 0.8, window_size[2] * 0.25, window_size[3]),
+                3: (window_size[0], window_size[3] / 2, window_size[2] / 2, window_size[3]),
+                #  3: (window_size[0] / 7, window_size[3] - (window_size[3] / 6), window_size[2] / 4, window_size[3]),
                 # bottom right
-                4: (window_size[2] / 2, window_size[3] / 3, window_size[2], window_size[3]),
+                4: (window_size[2] / 2, window_size[3] / 2, window_size[2], window_size[3]),
             }.get(quadrant_number, window_size)
 
         if quadrant_capture_count == 2:
@@ -93,6 +93,8 @@ class Util:
             window_size = (rect.left, rect.top, rect.right, rect.bottom)
         else:
             window_size = win32gui.GetWindowRect(hwnd)
+
+        Util.log("Found window with title %s" % title, "INFO")
 
         return window_size
 

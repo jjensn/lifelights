@@ -21,7 +21,6 @@ def main():
 
     for index, profile in enumerate(profiles):
         # Use the filename as the name of the profile
-
         print "%d - %s" % (index + 1, profile.replace("_", " ").rsplit('.', 1)[0].title())
 
     profile_id = int(input('Enter the profile number to load: ')) - 1

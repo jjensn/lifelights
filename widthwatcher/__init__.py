@@ -4,6 +4,7 @@ import time
 import OSC
 import numpy as np
 from util import Util
+import cv2
 
 
 class WidthWatcher:
@@ -27,14 +28,29 @@ class WidthWatcher:
 
         self._debug = "debug" in self._settings and self._settings["debug"]
 
+        self._blur_amount = self._settings['blur_amount']
+
+        if self._debug:
+            cv2.namedWindow(self._settings["name"])
+            cv2.createTrackbar('blur', self._settings[
+                "name"], self._blur_amount, 50, self.onTrackbarChange)
+
+    def onTrackbarChange(self, trackbarValue):
+        """Empty function for debugging."""
+        self._blur_amount = trackbarValue
+
     def scan(self, screen):
         """Scan an image and attempt to fit an invisible rectangle around a group of colors."""
-        import cv2
-        blur = cv2.medianBlur(screen, 35)
-        final_image = blur
 
-        image_mask = cv2.inRange(
-            final_image, self._lower_bounds, self._upper_bounds)
+        if self._debug:
+            trackbar = cv2.getTrackbarPos('blur', self._settings["name"])
+
+            if (trackbar % 2 == 0):
+                self._blur_amount = trackbar + 1
+
+        blur = cv2.medianBlur(screen, self._blur_amount)
+
+        image_mask = cv2.inRange(blur, self._lower_bounds, self._upper_bounds)
 
         cnts = cv2.findContours(image_mask.copy(), cv2.RETR_EXTERNAL,
                                 cv2.CHAIN_APPROX_SIMPLE)[-2]
@@ -51,14 +67,14 @@ class WidthWatcher:
             self._width = float(width)
 
             if self._debug:
-                cv2.rectangle(final_image, (left, top),
+                cv2.rectangle(blur, (left, top),
                               (left + width, top + height), (0, 255, 0), 2)
         else:
             self._width = 0.0
 
         if self._debug:
             # cv2.drawContours(closing, cnts, -1, (0,255,0), 3)
-            cv2.imshow(self._settings["name"], final_image)
+            cv2.imshow(self._settings["name"], blur)
             cv2.waitKey(100)
 
     def process(self):
