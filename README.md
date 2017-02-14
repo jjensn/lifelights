@@ -32,8 +32,9 @@ Currently there is no input sanitation or verification, so drifting from the gui
 - **quadrant_number** (integer): Which quadrant to capture. See "Final notes" section for details.
 - **watchers**: List of different 'watchers' to calculate. For example, if there was a green health bar and a blue mana bar, you would add a separate entry for both. To avoid wasting resources, this uses the same screenshot for each watcher listed. That is to say, there won't be another screenshot taken until all the watchers are processed.
   - **name** (string): Common name of what you are monitoring. Used for logging but can be anything that makes sense to you
-  - **min_width** (integer): Minimum number of pixels (width) of a horizontal bar (rectangle) needed to be considered a status bar. Helps prevent false positives for elements on the screen that are the same color as the status bar being monitored.
+  - **debug** (bool): true or false, displays the captured screen and a slider to set the blur amount
   - **change_threshold** (integer): Percentage (0-100) that determines when an API request should fire off. Prevents flooding the API endpoint with minor changes in health. For example, if this is set to 5, lights will only be updated on any 5% change to a health bar. 0 = don't throttle
+  - **blur_amount** (integer): Amount of median blur to apply. Finds the median color of parts of an image -- useful for statuses who may not all be the same color.
   - **color_upper_limit**: Collection of R,G,B colors that sets the upper limit for the status bar to monitor. In layman's terms, "the lightest color the status bar will ever be".
   - **color_lower_limit**: Collection of R,G,B colors that sets the lower limit for the status bar to monitor. In layman's terms, "the darkest color the status bar will ever be".
   - *Take note*: The tighter you can set the color boundaries, the less false positives the script will detect. Tweak as needed.
