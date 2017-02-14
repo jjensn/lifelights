@@ -16,6 +16,7 @@ Control your home based on _any_ horizontal rectangles by using simple screensho
 ### Usage
 - Double click on 'lifelights.py' in Windows Explorer or run python lifelights.py from the command-line
 - Enter the profile number when prompted
+- Select the profile from the menu
 
 ### Known limitations
 - Not compatible with OSX
