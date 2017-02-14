@@ -15,6 +15,8 @@ Control your home based on _any_ horizontal rectangles by using simple screensho
 
 ### Usage
 - Double click on 'lifelights.py' in Windows Explorer or run python lifelights.py from the command-line
+- Enter the profile number when prompted
+- Select the profile from the menu
 
 ### Known limitations
 - Not compatible with OSX
@@ -22,7 +24,7 @@ Control your home based on _any_ horizontal rectangles by using simple screensho
 - API POST requests will always be in JSON format
 - OSC messages will be an array, not a dictionary, with the name of the field before the field value.
 
-### Configuration details
+### Profile configuration details
 Currently there is no input sanitation or verification, so drifting from the guidlines below will likely break the script.
 
 - **window_title** (string): Title of the window that will be monitored
@@ -31,21 +33,22 @@ Currently there is no input sanitation or verification, so drifting from the gui
 - **quadrant_number** (integer): Which quadrant to capture. See "Final notes" section for details.
 - **watchers**: List of different 'watchers' to calculate. For example, if there was a green health bar and a blue mana bar, you would add a separate entry for both. To avoid wasting resources, this uses the same screenshot for each watcher listed. That is to say, there won't be another screenshot taken until all the watchers are processed.
   - **name** (string): Common name of what you are monitoring. Used for logging but can be anything that makes sense to you
-  - **min_width** (integer): Minimum number of pixels (width) of a horizontal bar (rectangle) needed to be considered a status bar. Helps prevent false positives for elements on the screen that are the same color as the status bar being monitored.
+  - **debug** (bool): true or false, displays the captured screen and a slider to set the blur amount
   - **change_threshold** (integer): Percentage (0-100) that determines when an API request should fire off. Prevents flooding the API endpoint with minor changes in health. For example, if this is set to 5, lights will only be updated on any 5% change to a health bar. 0 = don't throttle
+  - **blur_amount** (integer): Amount of median blur to apply. Finds the median color of parts of an image -- useful for statuses who may not all be the same color.
   - **color_upper_limit**: Collection of R,G,B colors that sets the upper limit for the status bar to monitor. In layman's terms, "the lightest color the status bar will ever be".
   - **color_lower_limit**: Collection of R,G,B colors that sets the lower limit for the status bar to monitor. In layman's terms, "the darkest color the status bar will ever be".
   - *Take note*: The tighter you can set the color boundaries, the less false positives the script will detect. Tweak as needed.
   - **requests**: List of RESTful events or OSC messages that should be fired when the ```change_threshold``` is passed
     - **endpoint** (string): API endpoint
     - **method** (string): POST or GET for REST, OSC for OSC
-    - **delay** (float): Interval in seconds to sleep after sending the API request. Use 0.0 for no delay.
+    - **pre_api_delay** (float): Interval in seconds to sleep before sending the API request. Use 0.0 for no delay.
+    - **post_api_delay** (float): Interval in seconds to sleep after sending the API request. Use 0.0 for no delay.
     - **payloads**: Collection of keys/values to send to the API endpoint. Currently supports the following special values:
-      - *RGB_PLACEHOLDER*: Array of an RGB color, calculated using the percentage to fade from green -> yellow -> red
-      - *WIDTH_PLACEHOLDER*: Integer of the current width of the status bar being monitored, in pixels
-      - *PERCENT_PLACEHOLDER*: Integer (0-100) of the status bar percentage
-      - *BRIGHTNESS_PLACEHOLDER*: Integer (0-255) of the status bar percentage
-      - *RAW_PERCENT_PLACEHOLDER*: Floating point (0-1) of the status bar percentage
+      - *LIFELIGHT_RGB*: Array of an RGB color, calculated using the percentage to fade from green -> yellow -> red
+      - *LIFELIGHT_RECT_WIDTH*: Integer of the current width of the status bar being monitored, in pixels
+      - *LIFELIGHT_PERCENT*: Integer (0-100) of the status bar percentage
+      - *LIFELIGHT_RAW_PERCENT*: Floating point (0-1) of the status bar percentage
 
 ### Final notes, thoughts and acknowledgements
 - ```quadrant_capture_count``` and ```quadrant_number``` were implemented as a way to help save computer resources and prevent false positives. The reasoning behind it is, if a user only cares about the bottom left corner of the screen, why save the whole screen in memory and process it if we don't need to?

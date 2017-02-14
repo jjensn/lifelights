@@ -1,0 +1,31 @@
+---
+window_title: Heroes of the Storm
+scan_interval: 0.3
+quadrant_capture_count: 1
+quadrant_number: 3
+watchers:
+  - name: 'Health'
+    debug: false
+    change_threshold: 5
+    blur_amount: 9
+    color_upper_limit:
+      red: 83
+      green: 255
+      blue: 72
+    color_lower_limit:
+      red: 53
+      green: 107
+      blue: 19
+    requests:
+      - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+        method: POST
+        delay: 0.0
+        payloads:
+          entity_id: 'light.office_1'
+          rgb_color: 'LIFELIGHT_RGB'
+      - endpoint: 'http://10.0.1.36:8123/api/services/light/turn_on'
+        method: POST
+        delay: 0.0
+        payloads:
+          entity_id: 'light.office_2'
+          rgb_color: 'LIFELIGHT_RGB'
