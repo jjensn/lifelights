@@ -41,7 +41,8 @@ class Util:
                 2: (window_size[3] / 2, window_size[1], window_size[2], window_size[3] / 2),
                 # bottom left
                 # tighter region for hots health bar (0, y * .8, x * .25, y)
-                # 3: (window_size[0], window_size[3] * 0.8, window_size[2] * 0.25, window_size[3]),
+                # 3: (window_size[0], window_size[3] * 0.8, window_size[2] *
+                # 0.25, window_size[3]),
                 3: (window_size[0], window_size[3] / 2, window_size[2] / 2, window_size[3]),
                 #  3: (window_size[0] / 7, window_size[3] - (window_size[3] / 6), window_size[2] / 4, window_size[3]),
                 # bottom right
